@@ -1,6 +1,6 @@
 # Mapstatic
 
-A CLI and Ruby Gem for generating static maps from map tile servers
+A CLI and Ruby Gem for generating static maps from map tile servers.
 
 ## Requirements
 
@@ -12,12 +12,12 @@ A CLI and Ruby Gem for generating static maps from map tile servers
 
 ## Getting started
 
-There are two ways to generate a static map from the mapstatic cli
+There are two ways to generate a static map from the mapstatic CLI.
 
 1. Specifying a bounding box and zoom level
 2. Specifying a center lat, center lng, width, height and zoom level
 
-The following generates a map of the UK using the [OpenStreetMap](http://www.openstreetmap.org/) tileset.  The width and height og the resulting image (`uk.png`) are determined by the bounding box and the zoom level. [This](http://boundingbox.klokantech.com/) is a good tool for finding the bounding box of an area.
+The command below generates a map of the UK using the [OpenStreetMap](http://www.openstreetmap.org/) tileset.  The width and height of the resulting image (`uk.png`) are determined by the bounding box and the zoom level. If you don't know the bounding box of the area then [this is a useful tool](http://boundingbox.klokantech.com/).
 
 ```.bash
 mapstatic map uk.png \
@@ -27,7 +27,7 @@ mapstatic map uk.png \
 
 ![UK](http://matchingnotes.com/images/uk.png)
 
-Alternatively, you can specify a central latitude and longitude and specify the width and height that you want the image to be.
+Alternatively, you can specify a central latitude and longitude and specify the width and height.
 
 ```.bash
 mapstatic map silicon-roundabout.png \
@@ -73,18 +73,18 @@ $ mapstatic map uk.png \
 }
 ```
 
-This is useful for seeing how large your map will be, and how many tiles it will be using actually generating your map.
+This is useful for seeing how large your map will be, and how many tiles it will be using without actually generating your map.
 
 ## Ruby API
 
-Mapstatic can be used in your application code:
+Mapstatic can be used in your application code to generate maps and get metadata about them:
 
 ```.ruby
 require 'mapstatic'
 map = Mapstatic::Map.new(
   :zoom => 12,
   :bbox => "-0.218894,51.450943,0.014382,51.553755",
-  :provider => ''http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+  :provider => 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 )
 map.render_map 'london.png'
 map.metadata # Returns the map metadata
@@ -92,6 +92,6 @@ map.metadata # Returns the map metadata
 
 ## License
 
-Foreman is licensed under the MIT license.
+Mapstatic is licensed under the MIT license.
 
 See LICENSE for the full license text.

@@ -1,6 +1,8 @@
 require "rubygems"
 require "rubygems/package_task"
 require "rdoc/task"
+$:.push File.expand_path("../lib", __FILE__)
+require "mapstatic/version"
 
 require "rspec"
 require "rspec/core/rake_task"
@@ -20,7 +22,7 @@ spec = Gem::Specification.new do |s|
 
   # Change these as appropriate
   s.name              = "mapstatic"
-  s.version           = "0.0.1"
+  s.version           = Mapstatic::VERSION
   s.summary           = "Static Map Generator"
   s.author            = "James Croft"
   s.email             = "james@matchingnotes.com"
@@ -35,6 +37,7 @@ spec = Gem::Specification.new do |s|
   # Add any extra files to include in the gem (like your README)
   s.files             = %w(Gemfile Gemfile.lock) + Dir.glob("{spec,lib}/**/*")
   s.require_paths     = ["lib"]
+  s.executables << 'mapstatic'
 
   # If you want to depend on other gems, add them here, along with any
   # relevant versions
