@@ -35,11 +35,15 @@ module Mapstatic
       end
     end
 
-    def render_map(filename)
+    def to_image
       base_image = create_uncropped_image
       base_image = fill_image_with_tiles(base_image)
       crop_to_size base_image
-      base_image.write filename
+      base_image
+    end
+
+    def render_map(filename)
+      to_image.write filename
     end
 
     def metadata
