@@ -4,7 +4,8 @@ A CLI and Ruby Gem for generating static maps from map tile servers.
 
 ## Requirements
 
-1. Imagemagick
+1. Ruby (on linux you may need the ruby-dev package)
+2. Imagemagick
 
 ## Installation
 
