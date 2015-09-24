@@ -54,6 +54,26 @@ describe Mapstatic::Map do
     end
   end
 
+  describe '#render_map' do
+    context 'when retrieving tile image fails' do
+      it 'raises TileRequestError' do
+        output_path = 'london.png'
+        map = Mapstatic::Map.new(
+          :bbox => '-0.2252197265625,51.4608524464555,-0.0494384765625,51.570241445811234',
+          :zoom => 11,
+          :provider => 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        )
+
+        expect do
+          VCR.use_cassette('osm-london-fail') do
+            map.render_map output_path
+          end
+        end.to raise_error('Retrieving tile from http://b.tile.openstreetmap.org/11/1022/680.png '\
+                           'failed with status code 500.')
+      end
+    end
+  end
+
   describe "image width" do
 
     context "when calculated from the bounding box" do

@@ -25,7 +25,10 @@ module Mapstatic
         end
       end
 
-      responses.map(&:body)
+      responses.map do |res|
+        fail Mapstatic::Errors::TileRequestError, res unless res.success?
+        res.body
+      end
     end
 
     private
