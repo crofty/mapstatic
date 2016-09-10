@@ -13,15 +13,12 @@ module Mapstatic
     def get_tiles(tiles)
       # custom user agent here
       hydra = Typhoeus::Hydra.new
-      requests = tiles.map{|tile| request = Typhoeus::Request.new(tile_url(tile), followlocation: true); hydra.queue(request); request }
+      requests = tiles.map do |tile|
+        request = Typhoeus::Request.new(tile_url(tile), Mapstatic.options[:typhoeus_options])
+        hydra.queue(request)
+        request
+      end
       hydra.run
-
-      # responses = []
-      # connection.in_parallel do
-      #   tiles.each do |tile|
-      #     responses << connection.get(tile_url(tile))
-      #   end
-      # end
 
       responses = requests.map{|r| r.response}
       responses.map do |res|
@@ -50,13 +47,6 @@ module Mapstatic
     def subdomains
       ['a','b','c']
     end
-
-    # def connection
-    #   @connection ||= Faraday.new do |builder|
-    #     builder.use FaradayMiddleware::FollowRedirects, limit: 3
-    #     builder.adapter :typhoeus
-    #   end
-    # end
 
   end
 

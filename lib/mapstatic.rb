@@ -1,4 +1,11 @@
 module Mapstatic
+
+  def self.options
+    @options ||= {
+        :typhoeus_options => {:timeout => 10, :followlocation => true, :maxredirs => 10, :headers => {"User-Agent" => "Mapstatic using typhoeus"} }
+    }
+  end
+
 end
 
 require 'mapstatic/errors'
