@@ -7,8 +7,8 @@ module Mapstatic
     # Raised when a request for a tile fails.
     class TileRequestError < MapstaticError
       def initialize(response)
-        url = response.env[:url]
-        status = response.status
+        url = response.request.base_url
+        status = response.code
         super("Retrieving tile from #{url} failed with status code #{status}.")
       end
     end

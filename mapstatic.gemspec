@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<mini_magick>, ["~> 4.0"])
-      s.add_runtime_dependency(%q<faraday>, ["~> 0.9"])
       s.add_runtime_dependency(%q<typhoeus>, ["~> 1.0"])
       s.add_development_dependency(%q<thor>, ["~> 0.18.1"])
       s.add_development_dependency(%q<awesome_print>, ["~> 1.2.0"])
@@ -31,7 +30,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<webmock>, ["~> 1.15.2"])
     else
       s.add_dependency(%q<mini_magick>, ["~> 4.0"])
-      s.add_dependency(%q<faraday>, ["~> 0.9"])
       s.add_dependency(%q<typhoeus>, ["~> 1.0"])
       s.add_dependency(%q<thor>, ["~> 0.18.1"])
       s.add_dependency(%q<awesome_print>, ["~> 1.2.0"])
@@ -42,7 +40,6 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<mini_magick>, ["~> 4.0"])
-    s.add_dependency(%q<faraday>, ["~> 0.9"])
     s.add_dependency(%q<typhoeus>, ["~> 1.0"])
     s.add_dependency(%q<thor>, ["~> 0.18.1"])
     s.add_dependency(%q<awesome_print>, ["~> 1.2.0"])
