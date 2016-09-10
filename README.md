@@ -10,6 +10,12 @@ A CLI and Ruby Gem for generating static maps from map tile servers.
 ## Installation
 
     gem install mapstatic
+    
+if you want to use command line for creating maps then additional gems are required
+
+    gem install mapstatic
+    gem install thor
+    gem install awesome_print
 
 ## Getting started
 
