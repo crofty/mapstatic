@@ -1,6 +1,4 @@
-require 'faraday'
 require 'typhoeus'
-require 'typhoeus/adapters/faraday'
 
 module Mapstatic
 
@@ -12,19 +10,17 @@ module Mapstatic
       @url = url
     end
 
-    def get_tile(tile)
-      connection.get(tile_url(tile)).body
-    end
-
     def get_tiles(tiles)
-      responses = []
-
-      connection.in_parallel do
-        tiles.each do |tile|
-          responses << connection.get(tile_url(tile))
-        end
+      # custom user agent here
+      hydra = Typhoeus::Hydra.new
+      requests = tiles.map do |tile|
+        request = Typhoeus::Request.new(tile_url(tile), Mapstatic.options[:typhoeus_options])
+        hydra.queue(request)
+        request
       end
+      hydra.run
 
+      responses = requests.map{|r| r.response}
       responses.map do |res|
         fail Mapstatic::Errors::TileRequestError, res unless res.success?
         res.body
@@ -50,12 +46,6 @@ module Mapstatic
 
     def subdomains
       ['a','b','c']
-    end
-
-    def connection
-      @connection ||= Faraday.new do |builder|
-        builder.adapter :typhoeus
-      end
     end
 
   end

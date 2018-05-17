@@ -26,7 +26,7 @@ spec = Gem::Specification.new do |s|
   s.summary           = "Static Map Generator"
   s.author            = "James Croft"
   s.email             = "james@matchingnotes.com"
-  s.homepage          = "http://matchingnotes.com"
+  s.homepage          = "https://github.com/crofty/mapstatic"
 
   s.has_rdoc          = true
   # You should probably have a README of some kind. Change the filename
@@ -42,13 +42,14 @@ spec = Gem::Specification.new do |s|
   # If you want to depend on other gems, add them here, along with any
   # relevant versions
   # s.add_dependency("some_other_gem", "~> 0.1.0")
+  s.add_dependency('mini_magick', '~> 4.0')
+  # s.add_dependency('faraday', '~> 0.9')
+  s.add_dependency('typhoeus', '~> 1.0')
 
-  # If your tests use any gems, include them here
-  s.add_dependency('mini_magick', '~> 3.6.0')
-  s.add_dependency('faraday', '~> 0.8.8')
-  s.add_dependency('thor', '~> 0.18.1')
-  s.add_dependency('awesome_print', '~> 1.2.0')
-  s.add_dependency('typhoeus', '~> 0.6.6')
+  s.add_development_dependency('thor', '~> 0.18.1') # install these if you want to use command line env
+  s.add_development_dependency('awesome_print', '~> 1.2.0') # install these if you want to use command line env
+
+  s.add_development_dependency('rake') # needed so that 'bundle exec rake' will work as expected
   s.add_development_dependency('rspec', '~> 2.13.0')
   s.add_development_dependency('vcr', '~> 2.7.0')
   s.add_development_dependency('webmock', '~> 1.15.2')
