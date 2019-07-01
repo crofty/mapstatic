@@ -42,17 +42,16 @@ spec = Gem::Specification.new do |s|
   # If you want to depend on other gems, add them here, along with any
   # relevant versions
   # s.add_dependency("some_other_gem", "~> 0.1.0")
-  s.add_dependency('mini_magick', '~> 4.0')
-  # s.add_dependency('faraday', '~> 0.9')
-  s.add_dependency('typhoeus', '~> 1.0')
+  s.add_dependency('mini_magick', '~> 4.9')
+  s.add_dependency('typhoeus', '~> 1.3')
 
-  s.add_development_dependency('thor', '~> 0.18.1') # install these if you want to use command line env
-  s.add_development_dependency('awesome_print', '~> 1.2.0') # install these if you want to use command line env
+  s.add_development_dependency('thor', ['>= 0.19.0', '< 2.0']) # install these if you want to use command line env
+  s.add_development_dependency('awesome_print', '< 2.0') # install these if you want to use command line env
 
   s.add_development_dependency('rake') # needed so that 'bundle exec rake' will work as expected
-  s.add_development_dependency('rspec', '~> 2.13.0')
-  s.add_development_dependency('vcr', '~> 2.7.0')
-  s.add_development_dependency('webmock', '~> 1.15.2')
+  s.add_development_dependency('rspec', '~> 3')
+  s.add_development_dependency('vcr', '~> 3')
+  s.add_development_dependency('webmock', '~> 2')
 end
 
 # This task actually builds the gem. We also regenerate a static
