@@ -1,14 +1,17 @@
 require 'mini_magick'
+require 'json'
 
 module Mapstatic
   class Map
     TILE_SIZE = 256
+    MAX_ZOOM = 19
+    MIN_ZOOM = 0
 
-    attr_reader :lat, :lng, :viewport, :geojson
-    attr_accessor :tile_source, :zoom
+    attr_reader :lat, :lng, :viewport, :geojson, :zoom
+    attr_accessor :tile_source
 
     def initialize(params={})
-      @zoom = params.fetch(:zoom).to_i
+      @zoom = params.fetch(:zoom, 0).to_i
 
       if params[:bbox]
         left, bottom, right, top = params[:bbox]
@@ -46,6 +49,41 @@ module Mapstatic
       @height || begin
         delta = Conversion.lat_to_y(viewport.top, zoom) - Conversion.lat_to_y(viewport.bottom, zoom)
         (delta * TILE_SIZE).abs
+      end
+    end
+
+    def zoom=(new_zoom)
+      @zoom = new_zoom
+      center = @viewport.center
+      @viewport = BoundingBox.from(
+        center_lat: center[:lat],
+        center_lng: center[:lng],
+        width: width.to_f / TILE_SIZE,
+        height: height.to_f / TILE_SIZE,
+        zoom: @zoom
+      )
+    end
+
+    def geojson=(data)
+      if data.is_a? String
+        @geojson = JSON.parse data
+      elsif data.is_a? Hash
+        # This looks really ugly, but it's just a quick and dirty way to ensure that keys in
+        # the hash are strings, not symbols.
+        @geojson = JSON.parse data.to_json
+      end
+    end
+
+    def fit_bounds
+      return if @geojson.nil?
+
+      coordinates = @geojson["geometry"]["coordinates"]
+      geojson_bbox = BoundingBox.for(coordinates)
+      @viewport.center = {lat: geojson_bbox.center[:lat], lng: geojson_bbox.center[:lng]}
+
+      MAX_ZOOM.downto(MIN_ZOOM) do |zoom|
+        self.zoom = zoom
+        break if geojson_bbox.fits_in? @viewport
       end
     end
 

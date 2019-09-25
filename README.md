@@ -10,7 +10,7 @@ A CLI and Ruby Gem for generating static maps from map tile servers.
 ## Installation
 
     gem install mapstatic
-    
+
 if you want to use command line for creating maps then additional gems are required
 
     gem install mapstatic
@@ -22,30 +22,41 @@ if you want to use command line for creating maps then additional gems are requi
 There are two ways to generate a static map from the mapstatic CLI.
 
 1. Specifying a bounding box and zoom level
+
+  The command below generates a map of the UK using the [OpenStreetMap](http://www.openstreetmap.org/) tileset.  The width and height of the resulting image (`uk.png`) are determined by the bounding box and the zoom level. If you don't know the bounding box of the area then [this is a useful tool](http://boundingbox.klokantech.com/).  
+
+  ```.bash
+  mapstatic map uk.png \
+    --zoom=5 \
+    --  bbox=-11.29,49.78,2.45,58.78
+  ```  
+
+  ![UK](http://matchingnotes.com/images/uk.png)
+
 2. Specifying a center lat, center lng, width, height and zoom level
 
-The command below generates a map of the UK using the [OpenStreetMap](http://www.openstreetmap.org/) tileset.  The width and height of the resulting image (`uk.png`) are determined by the bounding box and the zoom level. If you don't know the bounding box of the area then [this is a useful tool](http://boundingbox.klokantech.com/).
+  Alternatively, you can specify a central latitude and longitude and specify the width and height.  
 
-```.bash
-mapstatic map uk.png \
-  --zoom=5 \
-  --bbox=-11.29,49.78,2.45,58.78
-```
-
-![UK](http://matchingnotes.com/images/uk.png)
-
-Alternatively, you can specify a central latitude and longitude and specify the width and height.
-
-```.bash
-mapstatic map silicon-roundabout.png \
-  --zoom=18 \
-  --lat=51.52567 \
-  --lng=-0.08750 \
-  --width=600 \
-  --height=300
-```
+  ```.bash
+  mapstatic map silicon-roundabout.png \
+    --zoom=18 \
+    --lat=51.52567 \
+    --lng=-0.08750 \
+    --width=600 \
+    --height=300
+  ```  
 
 ![Silicon Roundabout](http://matchingnotes.com/images/silicon-roundabout.png)
+
+Optionally a gpx file can be specified. In that case, the routes and tracks contained in that file will be drawn on top of the map. The map view will be automatically adjusted to fit the given gpx route data.
+
+```.bash
+mapstatic map map.png \
+  --zoom=12 \
+  --width=600 \
+  --height=300 \
+  --gpx=file.gpx
+```
 
 ## Changing the provider
 
@@ -88,14 +99,37 @@ Mapstatic can be used in your application code to generate maps and get metadata
 
 ```.ruby
 require 'mapstatic'
+
+# Initialize
 map = Mapstatic::Map.new(
-  :zoom => 12,
-  :bbox => "-0.218894,51.450943,0.014382,51.553755",
-  :provider => 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+  width: 400,
+  height: 200
+  zoom: 11,
+  provider: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 )
-map.render_map 'london.png'
+
+# optional: set geojson data layer
+geojson_data = {
+  type: "FeatureCollection",
+  features: ... # Currently only LineString is supported by Mapstatic
+}
+map.geojson = geojson_data
+map.fit_bounds # Call this to set map dimensions so that geojson data fits into map area
+
+# Render to file
+map.to_file 'london.png'
 map.metadata # Returns the map metadata
+
+# You can also just render the image without writing it to a file.
+# This will produce a MiniMagic image object.
+image = map.to_image
 ```
+
+### Supported GeoJSON feature types
+
+* LineString
+
+To add support for more types, inherit a new class from Mapstatic::Painter, implement required methods, and add the class to painter_class_for method in `renderer.rb`.
 
 ## License
 

@@ -30,6 +30,16 @@ module Mapstatic
       {lat: lat, lng: lng}
     end
 
+    def center=(lat:, lng:)
+      delta_lat = lat - center[:lat]
+      delta_lng = lng - center[:lng]
+
+      @left   += delta_lng
+      @bottom += delta_lat
+      @right  += delta_lng
+      @top    += delta_lat
+    end
+
     def width_at(zoom)
       delta = Conversion.lng_to_x(right, zoom) - Conversion.lng_to_x(left, zoom)
       (delta * Map::TILE_SIZE).abs

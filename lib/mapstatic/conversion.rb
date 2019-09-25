@@ -21,5 +21,21 @@ module Mapstatic
       lat_rad = Math.atan(Math.sinh(Math::PI * (1 - 2 * y / n)))
       lat_deg = lat_rad / (Math::PI / 180.0)
     end
+
+    # Convert pixel coordinate x from Earth perspective (i.e the reference point, or the 0 value
+    # is at the prime meridian) to image perspective. The zero point of the image depends on its
+    # bounding box.
+    def self.x_to_px(x, bbox_center_x, bbox_width, tile_size)
+      px = (x - bbox_center_x) * tile_size + bbox_width / 2
+      px.round
+    end
+
+    # Convert pixel coordinate y from Earth perspective (i.e the reference point, or the 0 value
+    # is at the equator) to image perspective. The zero point of the image depends on its
+    # bounding box.
+    def self.y_to_px(y, bbox_center_y, bbox_height, tile_size)
+      px = (y - bbox_center_y) * tile_size + bbox_height / 2
+      px.round
+    end
   end
 end
