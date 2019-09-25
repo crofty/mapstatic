@@ -11,6 +11,8 @@ end
 require 'mapstatic/errors'
 require 'mapstatic/version'
 require 'mapstatic/conversion'
+require 'mapstatic/bounding_box'
 require 'mapstatic/map'
 require 'mapstatic/tile'
 require 'mapstatic/tile_source'
+require 'mapstatic/renderer'
